@@ -6,8 +6,11 @@ import {
   HttpErrorResponse,
   HttpClient,
 } from '@angular/common/http';
-import { Observable, throwError, catchError, switchMap } from 'rxjs';
+import { Observable, throwError, catchError, switchMap, BehaviorSubject, filter, take } from 'rxjs';
 import { Router } from '@angular/router';
+
+const czy_odswieza = new BehaviorSubject<boolean>(false);
+const odswiezony_token = new BehaviorSubject<boolean>(false);
 
 export const auth_interceptor = (
   req: HttpRequest<any>,
@@ -27,11 +30,25 @@ export const auth_interceptor = (
         !req.url.includes('/user/refresh') &&
         !req.url.includes('/user/login')
       ) {
+        if (czy_odswieza.value) {
+          return odswiezony_token.pipe(
+            filter((wynik) => wynik === true),
+            take(1),
+            switchMap(() => next(req.clone({ withCredentials: true }))),
+          );
+        }
+
+        czy_odswieza.next(true);
+        odswiezony_token.next(false);
+
         return http.post('http://127.0.0.1:8000/user/refresh', {}, { withCredentials: true }).pipe(
           switchMap(() => {
-            return next(nowe_zadanie);
+            czy_odswieza.next(false);
+            odswiezony_token.next(true);
+            return next(req.clone({ withCredentials: true }));
           }),
           catchError((blad_odswiezania) => {
+            czy_odswieza.next(false);
             router.navigate(['/login']);
             return throwError(() => blad_odswiezania);
           }),

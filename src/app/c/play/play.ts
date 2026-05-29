@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-play',
@@ -21,6 +22,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class PlayComponent implements OnInit, OnDestroy {
   router = inject(Router);
   route = inject(ActivatedRoute);
+  http = inject(HttpClient);
 
   @ViewChild('wideo_el') wideo_el!: ElementRef<HTMLVideoElement>;
 
@@ -32,6 +34,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   czy_pokazac_pomin_intro = signal<boolean>(false);
 
   id_timeout: ReturnType<typeof setTimeout> | undefined;
+  interwal_ping: ReturnType<typeof setInterval> | undefined;
   wideo_url = signal<string>('');
 
   ngOnInit() {
@@ -44,10 +47,20 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.wideo_url.set(`http://127.0.0.1:8000/wideo/stream/${id}?czy_serial=${czy_serial}`);
       }
     });
+
+    this.interwal_ping = setInterval(
+      () => {
+        this.http.get('http://127.0.0.1:8000/user/check').subscribe({
+          error: () => {},
+        });
+      },
+      15 * 60 * 1000,
+    );
   }
 
   ngOnDestroy() {
     clearTimeout(this.id_timeout);
+    clearInterval(this.interwal_ping);
   }
 
   @HostListener('document:mousemove')

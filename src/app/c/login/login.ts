@@ -48,7 +48,6 @@ export class LogowanieComponent implements OnInit {
         this.lista_kont.set(uzupelnione_konta);
       },
       error: () => {
-        // Zabezpieczenie na wypadek braku połączenia z backendem
         this.lista_kont.set(this.uzupelnij_konta([], 7));
       },
     });
@@ -69,6 +68,7 @@ export class LogowanieComponent implements OnInit {
 
   przesun_lewo() {
     this.lista_kont.update((lista) => {
+      if (lista.length === 0) return lista;
       const ostatni = lista[lista.length - 1];
       const reszta = lista.slice(0, -1);
       return [ostatni, ...reszta];
@@ -77,6 +77,7 @@ export class LogowanieComponent implements OnInit {
 
   przesun_prawo() {
     this.lista_kont.update((lista) => {
+      if (lista.length === 0) return lista;
       const pierwszy = lista[0];
       const reszta = lista.slice(1);
       return [...reszta, pierwszy];
