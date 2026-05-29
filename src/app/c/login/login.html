@@ -1,0 +1,29 @@
+<div class="kontener_logowania">
+  <button class="przycisk_strzalka lewa" (click)="przesun_lewo()">&#10094;</button>
+
+  <div class="karuzela">
+    @for (konto of lista_kont(); track $index) {
+      <div
+        class="kafelek_konta"
+        [class.srodkowy]="$index === srodkowy_index()"
+        [class.pusty]="konto.czy_puste"
+        [style.--odleglosc]="oblicz_odleglosc($index)"
+        (click)="wybierz_konto($index, konto)"
+      >
+        <div class="avatar">
+          @if (!konto.czy_puste) {
+            <img [src]="konto.avatar_url" [alt]="konto.login" />
+          }
+        </div>
+
+        <div class="kontener_nazwy">
+          @if (!konto.czy_puste) {
+            <div class="nazwa">{{ konto.login }}</div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <button class="przycisk_strzalka prawa" (click)="przesun_prawo()">&#10095;</button>
+</div>

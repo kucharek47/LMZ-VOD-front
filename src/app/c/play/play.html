@@ -1,0 +1,52 @@
+<div class="kontener_odtwarzacza" (click)="resetuj_ukrywanie()">
+
+  <video
+    #wideo_el
+    class="wideo_ekran"
+    [src]="wideo_url()"
+    (timeupdate)="aktualizuj_czas()"
+    (click)="przelacz_odtwarzanie()">
+  </video>
+
+  <div class="nakladka_ui" [class.ukryty]="!czy_pokazac_pasek()">
+
+    <div class="pasek_gorny" (mouseenter)="najechano_na_pasek()" (mouseleave)="zjechano_z_paska()">
+      <button class="przycisk_akcji" (click)="wroc_do_menu()">Menu</button>
+      <button class="przycisk_akcji" (click)="wroc_do_menu()">Wróć</button>
+    </div>
+
+    @if (czy_pokazac_pomin_intro()) {
+      <div class="kontener_pomin" (mouseenter)="najechano_na_pasek()" (mouseleave)="zjechano_z_paska()">
+        <button class="przycisk_pomin" (click)="pomin_intro()">Pomiń intro</button>
+      </div>
+    }
+
+    <div class="pasek_dolny_kontener" (mouseenter)="najechano_na_pasek()" (mouseleave)="zjechano_z_paska()">
+
+      <div class="przyciski_sterowania_czasem">
+        <button class="przycisk_akcji" (click)="przewin_czas(-10)">-10s</button>
+        <button class="przycisk_akcji" (click)="zmien_szybkosc()">{{ szybkosc_odtwarzania() }}x</button>
+        <button class="przycisk_akcji" (click)="przewin_czas(10)">+10s</button>
+      </div>
+
+      <div class="pasek_dolny">
+        <button class="przycisk_akcji ikona" (click)="przelacz_odtwarzanie()">
+          {{ czy_odtwarza() ? '⏸' : '▶' }}
+        </button>
+
+        <input
+          type="range"
+          class="pasek_postepu"
+          min="0"
+          max="100"
+          step="0.1"
+          [value]="postep_procent()"
+          (input)="przewin_suwak($event)"
+        >
+
+        <button class="przycisk_akcji ikona" (click)="pelny_ekran()">⛶</button>
+      </div>
+
+    </div>
+  </div>
+</div>

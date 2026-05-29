@@ -1,0 +1,138 @@
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.kontener_odtwarzacza {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wideo_ekran {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nakladka_ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 10;
+
+  &.ukryty {
+    opacity: 0;
+  }
+}
+
+.pasek_gorny {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 40px;
+  pointer-events: auto;
+  background: linear-gradient(to bottom, rgba(5, 4, 10, 0.8), transparent);
+}
+
+.kontener_pomin {
+  position: absolute;
+  bottom: 150px;
+  right: 40px;
+  pointer-events: auto;
+}
+
+.przycisk_pomin {
+  background-color: rgba(21, 15, 53, 0.8);
+  border: 1px solid #7b2cbf;
+  color: #e0dcfc;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #7b2cbf;
+    color: #fff;
+  }
+}
+
+.pasek_dolny_kontener {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px 30px 40px;
+  background: linear-gradient(to top, rgba(5, 4, 10, 0.9), transparent);
+  pointer-events: auto;
+  gap: 15px;
+}
+
+.przyciski_sterowania_czasem {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.pasek_dolny {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.przycisk_akcji {
+  background: transparent;
+  border: none;
+  color: #e0dcfc;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #7b2cbf;
+  }
+
+  &.ikona {
+    font-size: 1.5rem;
+  }
+}
+
+.pasek_postepu {
+  flex-grow: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #7b2cbf;
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}

@@ -1,0 +1,95 @@
+<div class="kontener_glowny">
+  @if (aktywna_wyspa(); as wyspa) {
+    <div class="wyspa">
+      <div class="kolumna_lewa">
+        <div class="plakat" [style.backgroundImage]="'url(' + wyspa.plakat_url + ')'"></div>
+        <div class="informacje_dolne">
+          <span class="rok">{{ wyspa.rok }}</span>
+          <span class="ocena">★ {{ wyspa.ocena }}</span>
+          <button class="przycisk_ogladaj" (click)="przejdz_do_odtwarzacza(wyspa)">Odtwarzaj</button>
+        </div>
+      </div>
+
+      <div class="kolumna_prawa">
+        @if (czy_gra_zwiastun()) {
+          <video class="tlo_wideo" [src]="wyspa.trailer_url" autoplay muted loop></video>
+        } @else {
+          <div class="tlo_wideo obraz_zastepczy" [style.backgroundImage]="'url(' + wyspa.plakat_url + ')'"></div>
+        }
+
+        <div class="gradient_opis">
+          <h2 class="tytul">{{ wyspa.tytul }}</h2>
+          <p class="opis_tekst">{{ wyspa.opis }}</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="sekcje_kafelkow">
+
+    <div class="sekcja">
+      <div class="naglowek_sekcji">
+        <h3>Ostatnio oglądane</h3>
+        <button class="przycisk_odswiez" (click)="odswiez_ostatnio()">Odśwież ↻</button>
+      </div>
+      <div class="rzad_kafelkow">
+        @for (wideo of lista_ostatnio(); track wideo.id) {
+          <div
+            class="kafelek"
+            [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
+            (mouseenter)="najechano_na_kafelek(wideo)"
+            (mouseleave)="zjechano_z_kafelka()"
+            (click)="przejdz_do_odtwarzacza(wideo)">
+            <div class="tytul_nakladka">{{ wideo.tytul }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="sekcja">
+      <div class="naglowek_sekcji">
+        <h3>Filmy</h3>
+        <div class="kontener_narzedzi">
+          <select class="lista_rozwijana" [ngModel]="wybrana_kategoria()" (ngModelChange)="zmiana_kategorii($event)">
+            @for (kat of lista_kategorii(); track kat.id) {
+              <option [value]="kat.id">{{ kat.nazwa }}</option>
+            }
+          </select>
+          <button class="przycisk_odswiez" (click)="odswiez_filmy()">Odśwież ↻</button>
+        </div>
+      </div>
+      <div class="rzad_kafelkow">
+        @for (wideo of lista_filmy(); track wideo.id) {
+          <div
+            class="kafelek"
+            [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
+            (mouseenter)="najechano_na_kafelek(wideo)"
+            (mouseleave)="zjechano_z_kafelka()"
+            (click)="przejdz_do_odtwarzacza(wideo)">
+            <div class="tytul_nakladka">{{ wideo.tytul }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="sekcja">
+      <div class="naglowek_sekcji">
+        <h3>Seriale</h3>
+        <button class="przycisk_odswiez" (click)="odswiez_seriale()">Odśwież ↻</button>
+      </div>
+      <div class="rzad_kafelkow">
+        @for (wideo of lista_seriale(); track wideo.id) {
+          <div
+            class="kafelek"
+            [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
+            (mouseenter)="najechano_na_kafelek(wideo)"
+            (mouseleave)="zjechano_z_kafelka()"
+            (click)="przejdz_do_odtwarzacza(wideo)">
+            <div class="tytul_nakladka">{{ wideo.tytul }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

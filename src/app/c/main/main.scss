@@ -1,0 +1,229 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.kontener_glowny {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.wyspa {
+  display: flex;
+  margin: 0 40px 40px 40px;
+  height: 450px;
+  background-color: #120e24;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(123, 44, 191, 0.3);
+}
+
+.kolumna_lewa {
+  flex: 0 0 33.33%;
+  display: flex;
+  flex-direction: column;
+  background-color: #0b0816;
+}
+
+.plakat {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid #7b2cbf;
+}
+
+.informacje_dolne {
+  height: 120px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.rok, .ocena {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #e0dcfc;
+}
+
+.przycisk_ogladaj {
+  width: 100%;
+  padding: 12px;
+  background-color: #7b2cbf;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #9d4edd;
+    transform: scale(1.02);
+  }
+}
+
+.kolumna_prawa {
+  flex: 0 0 66.66%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.tlo_wideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+
+  &.obraz_zastepczy {
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px) brightness(0.6);
+  }
+}
+
+.gradient_opis {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 100%);
+  padding: 40px 30px 20px 30px;
+}
+
+.tytul {
+  margin: 0 0 15px 0;
+  font-size: 2.5rem;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.opis_tekst {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #d1cbf0;
+  max-width: 90%;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.sekcje_kafelkow {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sekcja {
+  display: flex;
+  flex-direction: column;
+}
+
+.naglowek_sekcji {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  margin-bottom: 15px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+}
+
+.kontener_narzedzi {
+  display: flex;
+  gap: 15px;
+}
+
+.lista_rozwijana {
+  background-color: #150f35;
+  color: #e0dcfc;
+  border: 1px solid #7b2cbf;
+  padding: 8px 15px;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0 0 10px rgba(123, 44, 191, 0.5);
+  }
+}
+
+.przycisk_odswiez {
+  background: transparent;
+  color: #7b2cbf;
+  border: 1px solid #7b2cbf;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+
+  &:hover {
+    background: rgba(123, 44, 191, 0.2);
+    color: #fff;
+  }
+}
+
+.rzad_kafelkow {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 20px;
+  padding: 0 40px 20px 40px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.kafelek {
+  flex: 0 0 200px;
+  height: 150px;
+  background-color: #1e1b30;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  scroll-snap-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(123, 44, 191, 0.4);
+    border-color: #7b2cbf;
+    z-index: 10;
+  }
+
+  .tytul_nakladka {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover .tytul_nakladka {
+    opacity: 1;
+  }
+}
