@@ -108,11 +108,7 @@ export class LogowanieComponent implements OnInit {
 
   zaloguj(konto: Konto) {
     this.http
-      .post(
-        'http://127.0.0.1:8000/user/login',
-        { login: konto.login, haslo: '' },
-        { withCredentials: true },
-      )
+      .post('http://127.0.0.1:8000/user/login', { login: konto.login, haslo: '' })
       .subscribe({
         next: () => {
           this.router.navigate(['/main']);
