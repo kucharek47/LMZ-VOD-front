@@ -10,7 +10,7 @@ import { Observable, throwError, catchError, switchMap, BehaviorSubject, filter,
 import { Router } from '@angular/router';
 
 const czy_odswieza = new BehaviorSubject<boolean>(false);
-const odswiezony_token = new BehaviorSubject<boolean>(false);
+const odswiezony_token = new BehaviorSubject<boolean | null>(null);
 
 export const auth_interceptor = (
   req: HttpRequest<any>,
@@ -32,14 +32,19 @@ export const auth_interceptor = (
       ) {
         if (czy_odswieza.value) {
           return odswiezony_token.pipe(
-            filter((wynik) => wynik === true),
+            filter((wynik) => wynik !== null),
             take(1),
-            switchMap(() => next(req.clone({ withCredentials: true }))),
+            switchMap((wynik) => {
+              if (wynik) {
+                return next(req.clone({ withCredentials: true }));
+              }
+              return throwError(() => blad);
+            }),
           );
         }
 
         czy_odswieza.next(true);
-        odswiezony_token.next(false);
+        odswiezony_token.next(null);
 
         return http.post('http://127.0.0.1:8000/user/refresh', {}, { withCredentials: true }).pipe(
           switchMap(() => {
@@ -49,6 +54,7 @@ export const auth_interceptor = (
           }),
           catchError((blad_odswiezania) => {
             czy_odswieza.next(false);
+            odswiezony_token.next(false);
             router.navigate(['/login']);
             return throwError(() => blad_odswiezania);
           }),
