@@ -46,7 +46,7 @@ export const auth_interceptor = (
         czy_odswieza.next(true);
         odswiezony_token.next(null);
 
-        return http.post('http://127.0.0.1:8000/user/refresh', {}, { withCredentials: true }).pipe(
+        return http.post('/user/refresh', {}, { withCredentials: true }).pipe(
           switchMap(() => {
             czy_odswieza.next(false);
             odswiezony_token.next(true);

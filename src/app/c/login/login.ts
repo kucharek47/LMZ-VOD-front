@@ -35,12 +35,12 @@ export class LogowanieComponent implements OnInit {
   }
 
   pobierz_uzytkownikow() {
-    this.http.get<dane_z_api[]>('http://127.0.0.1:8000/user/all').subscribe({
+    this.http.get<dane_z_api[]>('/user/all').subscribe({
       next: (odpowiedz) => {
         const pobrane_konta: Konto[] = odpowiedz.map((uzytkownik) => ({
           id: uzytkownik.id,
           login: uzytkownik.nazwa,
-          avatar_url: `http://127.0.0.1:8000/${uzytkownik.path_avatar}`,
+          avatar_url: `/${uzytkownik.path_avatar}`,
           czy_puste: false,
         }));
 
@@ -109,7 +109,7 @@ export class LogowanieComponent implements OnInit {
 
   zaloguj(konto: Konto) {
     this.http
-      .post('http://127.0.0.1:8000/user/login', { login: konto.login, haslo: '' })
+      .post('/user/login', { login: konto.login, haslo: '' })
       .subscribe({
         next: () => {
           this.router.navigate(['/main']);

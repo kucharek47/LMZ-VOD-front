@@ -7,7 +7,7 @@ export const auth_guard: CanActivateFn = () => {
   const router = inject(Router);
   const http = inject(HttpClient);
 
-  return http.get('http://127.0.0.1:8000/user/check', { withCredentials: true }).pipe(
+  return http.get('/user/check', { withCredentials: true }).pipe(
     map(() => true),
     catchError(() => {
       router.navigate(['/login']);

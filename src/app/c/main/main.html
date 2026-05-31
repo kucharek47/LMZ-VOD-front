@@ -4,15 +4,24 @@
       <div class="kolumna_lewa">
         <div class="plakat" [style.backgroundImage]="'url(' + wyspa.plakat_url + ')'"></div>
         <div class="informacje_dolne">
-          <span class="rok">{{ wyspa.rok }}</span>
-          <span class="ocena">★ {{ wyspa.ocena }}</span>
-          <button class="przycisk_ogladaj" (click)="przejdz_do_odtwarzacza(wyspa)">Odtwarzaj</button>
+          @if (wyspa.rok > 0) {
+            <span class="rok">{{ wyspa.rok }}</span>
+          }
+          <span class="ocena">★ {{ wyspa.ocena_srednia | number:'1.1-1' }} ({{ wyspa.ocena_glosy }})</span>
+          <button class="przycisk_ogladaj" (click)="przejdz_do_odtwarzacza(wyspa, $event)">Odtwarzaj</button>
         </div>
       </div>
 
-      <div class="kolumna_prawa">
-        @if (czy_gra_zwiastun()) {
-          <video class="tlo_wideo" [src]="wyspa.trailer_url" autoplay muted loop></video>
+      <div class="kolumna_prawa" [class.odtwarza_zwiastun]="czy_gra_zwiastun() && wyspa.bezpieczny_trailer_url">
+        @if (czy_gra_zwiastun() && wyspa.bezpieczny_trailer_url) {
+          <iframe
+            class="tlo_wideo iframe_tlo"
+            [src]="wyspa.bezpieczny_trailer_url"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            tabindex="-1">
+          </iframe>
+          <div class="nakladka_klik" (click)="otworz_zwiastun(wyspa.trailer_url, $event)"></div>
         } @else {
           <div class="tlo_wideo obraz_zastepczy" [style.backgroundImage]="'url(' + wyspa.plakat_url + ')'"></div>
         }
@@ -20,26 +29,30 @@
         <div class="gradient_opis">
           <h2 class="tytul">{{ wyspa.tytul }}</h2>
           <p class="opis_tekst">{{ wyspa.opis }}</p>
+          <div class="dodatkowe_informacje">
+            @if (wyspa.data_premiery) { <span>Premiera: {{ wyspa.data_premiery }}</span> }
+            @if (wyspa.czas_trwania > 0) { <span>Czas: {{ wyspa.czas_trwania }} min</span> }
+          </div>
         </div>
       </div>
     </div>
   }
 
   <div class="sekcje_kafelkow">
-
     <div class="sekcja">
       <div class="naglowek_sekcji">
         <h3>Ostatnio oglądane</h3>
         <button class="przycisk_odswiez" (click)="odswiez_ostatnio()">Odśwież ↻</button>
       </div>
-      <div class="rzad_kafelkow">
+      <div class="rzad_kafelkow" (scroll)="obsluga_scrolla($event, lista_ostatnio())">
         @for (wideo of lista_ostatnio(); track wideo.id) {
           <div
             class="kafelek"
+            [class.aktywny]="aktywna_wyspa()?.id === wideo.id"
             [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
             (mouseenter)="najechano_na_kafelek(wideo)"
             (mouseleave)="zjechano_z_kafelka()"
-            (click)="przejdz_do_odtwarzacza(wideo)">
+            (click)="przejdz_do_odtwarzacza(wideo, $event)">
             <div class="tytul_nakladka">{{ wideo.tytul }}</div>
           </div>
         }
@@ -58,14 +71,15 @@
           <button class="przycisk_odswiez" (click)="odswiez_filmy()">Odśwież ↻</button>
         </div>
       </div>
-      <div class="rzad_kafelkow">
+      <div class="rzad_kafelkow" (scroll)="obsluga_scrolla($event, lista_filmy())">
         @for (wideo of lista_filmy(); track wideo.id) {
           <div
             class="kafelek"
+            [class.aktywny]="aktywna_wyspa()?.id === wideo.id"
             [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
             (mouseenter)="najechano_na_kafelek(wideo)"
             (mouseleave)="zjechano_z_kafelka()"
-            (click)="przejdz_do_odtwarzacza(wideo)">
+            (click)="przejdz_do_odtwarzacza(wideo, $event)">
             <div class="tytul_nakladka">{{ wideo.tytul }}</div>
           </div>
         }
@@ -77,19 +91,19 @@
         <h3>Seriale</h3>
         <button class="przycisk_odswiez" (click)="odswiez_seriale()">Odśwież ↻</button>
       </div>
-      <div class="rzad_kafelkow">
+      <div class="rzad_kafelkow" (scroll)="obsluga_scrolla($event, lista_seriale())">
         @for (wideo of lista_seriale(); track wideo.id) {
           <div
             class="kafelek"
+            [class.aktywny]="aktywna_wyspa()?.id === wideo.id"
             [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
             (mouseenter)="najechano_na_kafelek(wideo)"
             (mouseleave)="zjechano_z_kafelka()"
-            (click)="przejdz_do_odtwarzacza(wideo)">
+            (click)="przejdz_do_odtwarzacza(wideo, $event)">
             <div class="tytul_nakladka">{{ wideo.tytul }}</div>
           </div>
         }
       </div>
     </div>
-
   </div>
 </div>

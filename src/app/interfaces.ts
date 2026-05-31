@@ -2,9 +2,13 @@ export interface ElementWideo {
   id: number;
   tytul: string;
   opis: string;
+  data_premiery: string;
   plakat_url: string;
   trailer_url: string;
-  ocena: number;
+  bezpieczny_trailer_url?: any;
+  ocena_srednia: number;
+  ocena_glosy: number;
+  czas_trwania: number;
   rok: number;
   kategoria?: string;
   czy_serial: boolean;
@@ -22,17 +26,27 @@ export interface FilmDto {
   release_date: string;
   poster_path: string;
   trailer_url: string;
-  file_path: string;
-  genres: string[];
+  trailer_src: string;
+  ocena: number;
+  liczba_glosow: number;
+  czas_trwania: number;
+  file_path?: string;
+  genres?: string[];
 }
 
 export interface SerialDto {
   id: number;
   title: string;
   description: string;
+  release_date: string;
   poster_path: string;
-  genres: string[];
-  seasons_count: number;
+  trailer_url: string;
+  trailer_src: string;
+  ocena: number;
+  liczba_glosow: number;
+  czas_trwania: number;
+  seasons_count?: number;
+  genres?: string[];
 }
 
 export interface OstatnioDto {
@@ -41,4 +55,7 @@ export interface OstatnioDto {
   plakat_url: string;
   typ_media: string;
   obejrzany_czas: number;
+  data_aktualizacji: string;
+  numer_sezonu?: number;
+  numer_odcinka?: number;
 }

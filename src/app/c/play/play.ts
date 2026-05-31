@@ -44,13 +44,13 @@ export class PlayComponent implements OnInit, OnDestroy {
       const id = params['id'];
       const czy_serial = params['czy_serial'] === 'true';
       if (id) {
-        this.wideo_url.set(`http://127.0.0.1:8000/wideo/stream/${id}?czy_serial=${czy_serial}`);
+        this.wideo_url.set(`/wideo/stream/${id}?czy_serial=${czy_serial}`);
       }
     });
 
     this.interwal_ping = setInterval(
       () => {
-        this.http.get('http://127.0.0.1:8000/user/check').subscribe({
+        this.http.get('/user/check').subscribe({
           error: () => {},
         });
       },
