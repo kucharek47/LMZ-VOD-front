@@ -12,6 +12,8 @@ export interface ElementWideo {
   rok: number;
   kategoria?: string;
   czy_serial: boolean;
+  odcinek_id?: number;
+  data_ogladania?: string;
 }
 
 export interface Kategoria {
@@ -58,4 +60,12 @@ export interface OstatnioDto {
   data_aktualizacji: string;
   numer_sezonu?: number;
   numer_odcinka?: number;
+  odcinek_id?: number;
+}
+
+export interface I_Postep {
+  media_id: number;
+  odcinek_id: number | null;
+  aktualny_czas: number;
+  calkowity_czas: number;
 }

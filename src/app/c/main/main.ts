@@ -97,13 +97,25 @@ export class MainComponent implements OnInit, OnDestroy {
     });
   }
 
+  formatuj_date(data_iso: string): string {
+    if (!data_iso) return '';
+    const d = new Date(data_iso);
+    return d.toLocaleString('pl-PL', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
   odswiez_ostatnio() {
     this.http.get<OstatnioDto[]>(`/wideo/ostatnio_ogladane`).subscribe((dane) => {
       const wynik = dane.map((d) => ({
         id: d.media_id,
         tytul: d.tytul,
         opis: '',
-        data_premiery: d.data_aktualizacji || '',
+        data_premiery: '',
         plakat_url: this.buduj_url(d.plakat_url),
         trailer_url: '',
         bezpieczny_trailer_url: null,
@@ -112,6 +124,8 @@ export class MainComponent implements OnInit, OnDestroy {
         czas_trwania: 0,
         rok: 0,
         czy_serial: d.typ_media === 'serial',
+        odcinek_id: d.odcinek_id,
+        data_ogladania: this.formatuj_date(d.data_aktualizacji),
       }));
       this.lista_ostatnio.set(wynik);
     });
@@ -250,9 +264,13 @@ export class MainComponent implements OnInit, OnDestroy {
   przejdz_do_odtwarzacza(wideo: ElementWideo, zdarzenie?: Event) {
     if (zdarzenie) zdarzenie.stopPropagation();
     if (wideo && wideo.id) {
-      this.router.navigate(['/play'], {
-        queryParams: { id: wideo.id, czy_serial: wideo.czy_serial ? 'true' : 'false' },
-      });
+      const parametry: any = { id: wideo.id, czy_serial: wideo.czy_serial ? 'true' : 'false' };
+
+      if (wideo.odcinek_id) {
+        parametry.odcinek_id = wideo.odcinek_id;
+      }
+
+      this.router.navigate(['/play'], { queryParams: parametry });
     }
   }
 

@@ -32,6 +32,7 @@
           <div class="dodatkowe_informacje">
             @if (wyspa.data_premiery) { <span>Premiera: {{ wyspa.data_premiery }}</span> }
             @if (wyspa.czas_trwania > 0) { <span>Czas: {{ wyspa.czas_trwania }} min</span> }
+            @if (wyspa.data_ogladania) { <span>Oglądano: {{ wyspa.data_ogladania }}</span> }
           </div>
         </div>
       </div>
@@ -39,25 +40,27 @@
   }
 
   <div class="sekcje_kafelkow">
-    <div class="sekcja">
-      <div class="naglowek_sekcji">
-        <h3>Ostatnio oglądane</h3>
-        <button class="przycisk_odswiez" (click)="odswiez_ostatnio()">Odśwież ↻</button>
+    @if (lista_ostatnio().length > 0) {
+      <div class="sekcja">
+        <div class="naglowek_sekcji">
+          <h3>Kontynuuj oglądanie</h3>
+          <button class="przycisk_odswiez" (click)="odswiez_ostatnio()">Odśwież ↻</button>
+        </div>
+        <div class="rzad_kafelkow" (scroll)="obsluga_scrolla($event, lista_ostatnio())">
+          @for (wideo of lista_ostatnio(); track $index) {
+            <div
+              class="kafelek"
+              [class.aktywny]="aktywna_wyspa()?.id === wideo.id"
+              [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
+              (mouseenter)="najechano_na_kafelek(wideo)"
+              (mouseleave)="zjechano_z_kafelka()"
+              (click)="przejdz_do_odtwarzacza(wideo, $event)">
+              <div class="tytul_nakladka">{{ wideo.tytul }}</div>
+            </div>
+          }
+        </div>
       </div>
-      <div class="rzad_kafelkow" (scroll)="obsluga_scrolla($event, lista_ostatnio())">
-        @for (wideo of lista_ostatnio(); track wideo.id) {
-          <div
-            class="kafelek"
-            [class.aktywny]="aktywna_wyspa()?.id === wideo.id"
-            [style.backgroundImage]="'url(' + wideo.plakat_url + ')'"
-            (mouseenter)="najechano_na_kafelek(wideo)"
-            (mouseleave)="zjechano_z_kafelka()"
-            (click)="przejdz_do_odtwarzacza(wideo, $event)">
-            <div class="tytul_nakladka">{{ wideo.tytul }}</div>
-          </div>
-        }
-      </div>
-    </div>
+    }
 
     <div class="sekcja">
       <div class="naglowek_sekcji">

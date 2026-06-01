@@ -5,8 +5,23 @@
     class="wideo_ekran"
     [src]="wideo_url()"
     (timeupdate)="aktualizuj_czas()"
-    (click)="przelacz_odtwarzanie()">
+    (click)="przelacz_odtwarzanie()"
+    (pause)="zapisz_postep(true)"
+    (seeked)="zapisz_postep(true)">
   </video>
+
+  @if (czy_pokazac_wznowienie()) {
+    <div class="nakladka_wznowienie">
+      <div class="okno_wznowienia">
+        <h3>Kontynuować oglądanie?</h3>
+        <p>Zakończyłeś na {{ formatuj_czas(zapisany_czas()) }}. Czy chcesz wznowić?</p>
+        <div class="okno_wznowienia_akcje">
+          <button class="przycisk_wznow" (click)="wznow_ogladanie()">Wznów</button>
+          <button class="przycisk_od_nowa" (click)="zacznij_od_nowa()">Od nowa</button>
+        </div>
+      </div>
+    </div>
+  }
 
   <div class="nakladka_ui" [class.ukryty]="!czy_pokazac_pasek()">
 
